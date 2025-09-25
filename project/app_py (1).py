@@ -79,9 +79,6 @@ def pragmatic_features(text):
     return " ".join(features)
 
 # =========================
-
-!pip install streamlit
-
 !pip install nltk
 import nltk
 
