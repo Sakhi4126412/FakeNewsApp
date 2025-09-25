@@ -79,7 +79,6 @@ def pragmatic_features(text):
     return " ".join(features)
 
 # =========================
-!pip install nltk
 import nltk
 
 # Download the resources you need
