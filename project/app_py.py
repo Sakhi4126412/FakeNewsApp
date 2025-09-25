@@ -80,4 +80,3 @@ def pragmatic_features(text):
 
 # =========================
 
-!pip install streamlit
