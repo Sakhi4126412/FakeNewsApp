@@ -163,7 +163,7 @@ if uploaded_file:
         # Create a single unified visualization
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
         
-       # Enhanced Bar Chart
+# Enhanced Bar Chart
 colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']  # Custom bar colors
 bars = ax1.bar(
     results_df["Model"],
@@ -190,23 +190,6 @@ for bar in bars:
     bar.set_edgecolor("black")
     bar.set_alpha(0.95)
 
-        
-        # Highlight the best model
-        best_idx = results_df["Accuracy"].idxmax()
-        bars[best_idx].set_color('#FFD93D')
-        bars[best_idx].set_edgecolor('pink')
-        bars[best_idx].set_linewidth(2)
-        
-        # Add value labels on bars
-        for i, (model, acc) in enumerate(zip(results_df["Model"], results_df["Accuracy"])):
-            ax1.text(i, acc + 1, f'{acc:.1f}%', ha='center', va='bottom', 
-                    fontsize=12, fontweight='bold', color='darkblue')
-        
-        ax1.set_ylabel('Accuracy (%)', fontsize=12, fontweight='bold')
-        ax1.set_title(f'Model Performance - {phase}\n', fontsize=14, fontweight='bold')
-        ax1.set_ylim(0, min(100, max(results_df["Accuracy"]) + 15))
-        ax1.grid(axis='y', alpha=0.3)
-        ax1.tick_params(axis='x', rotation=15)
         
         # Donut chart for performance distribution
 wedges, texts, autotexts = ax2.pie(
