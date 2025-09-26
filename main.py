@@ -86,6 +86,9 @@ def evaluate_models(X_features, y):
 # ============================
 # Streamlit UI
 # ============================
+import streamlit as st
+import pandas as pd
+
 st.set_page_config(page_title="NLP Phase Analysis", layout="wide")
 
 # Title
@@ -93,24 +96,25 @@ st.title("📰 Fake News Detection App")
 
 st.markdown("### 📁 Upload Your Dataset")
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
-    
-    if uploaded_file:
-        st.success("File uploaded successfully!")
-        df = pd.read_csv(uploaded_file)
-        
-        st.header("⚙️ Configuration")
-        text_col = st.selectbox("Select Text Column:", df.columns)
-        target_col = st.selectbox("Select Target Column:", df.columns)
-        
-        phase = st.selectbox("Select NLP Phase:", [
-            "Lexical & Morphological",
-            "Syntactic", 
-            "Semantic",
-            "Discourse",
-            "Pragmatic"
-        ])
-        
-        run_analysis = st.button("🚀 Run Analysis", type="primary")
+
+if uploaded_file:
+    st.success("File uploaded successfully!")
+    df = pd.read_csv(uploaded_file)
+
+    st.markdown("### ⚙️ Configuration")
+    text_col = st.selectbox("Select Text Column:", df.columns)
+    target_col = st.selectbox("Select Target Column:", df.columns)
+
+    phase = st.selectbox("Select NLP Phase:", [
+        "Lexical & Morphological",
+        "Syntactic",
+        "Semantic",
+        "Discourse",
+        "Pragmatic"
+    ])
+
+    run_analysis = st.button("🚀 Run Analysis", type="primary")
+
 
 # Main content area
 if uploaded_file:
