@@ -86,14 +86,11 @@ def evaluate_models(X_features, y):
 # ============================
 # Streamlit UI
 # ============================
-import streamlit as st
-import pandas as pd
-
 st.set_page_config(page_title="NLP Phase Analysis", layout="wide")
 
-# Title
-st.title("📰 Fake News Detection App")
+st.title("📊 Fake News Detection - NLP Phase Analysis")
 
+# File upload in the center (not sidebar)
 st.markdown("### 📁 Upload Your Dataset")
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
@@ -107,7 +104,7 @@ if uploaded_file:
 
     phase = st.selectbox("Select NLP Phase:", [
         "Lexical & Morphological",
-        "Syntactic",
+        "Syntactic", 
         "Semantic",
         "Discourse",
         "Pragmatic"
@@ -115,10 +112,9 @@ if uploaded_file:
 
     run_analysis = st.button("🚀 Run Analysis", type="primary")
 
-
 # Main content area
 if uploaded_file:
-    st.write("### 📋 Display Data")
+    st.write("### 📋 Data Preview")
     st.dataframe(df.head(), use_container_width=True)
     
     if run_analysis:
@@ -156,63 +152,57 @@ if uploaded_file:
         results_df = pd.DataFrame(list(results.items()), columns=["Model", "Accuracy"])
         results_df = results_df.sort_values(by="Accuracy", ascending=False).reset_index(drop=True)
 
-        # Display results without partitions
+        # Display results
         st.write("---")
-        st.subheader("Model Performance Overview")
+        st.subheader("📊 Model Performance Overview")
         
-        # Create a single unified visualization
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
         
-# Enhanced Bar Chart
-colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']  # Custom bar colors
-bars = ax1.bar(
-    results_df["Model"],
-    results_df["Accuracy"],
-    color=colors,
-    alpha=0.9,
-    edgecolor='darkgray',
-    linewidth=1.5
-)
-
-# Add value labels on top of bars
-for bar in bars:
-    height = bar.get_height()
-    ax1.text(
-        bar.get_x() + bar.get_width()/2.0, height + 1,
-        f'{height:.1f}%',
-        ha='center', va='bottom',
-        fontsize=12, fontweight='bold', color='black'
-)
-
-# Make bars slightly rounded at the top
-for bar in bars:
-    bar.set_linewidth(1.5)
-    bar.set_edgecolor("black")
-    bar.set_alpha(0.95)
-
+        # Enhanced Bar Chart
+        colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
+        bars = ax1.bar(results_df["Model"], results_df["Accuracy"], 
+                      color=colors, alpha=0.9, edgecolor='darkgray', linewidth=1.5)
         
-        # Donut chart for performance distribution
-wedges, texts, autotexts = ax2.pie(
-    results_df["Accuracy"], 
-    labels=results_df["Model"], 
-    autopct='%1.1f%%',
-    startangle=90,
-    colors=colors,
-    explode=[0.1 if i == best_idx else 0 for i in range(len(results_df))]
-)
+        # Highlight the best model
+        best_idx = results_df["Accuracy"].idxmax()
+        bars[best_idx].set_color('#FFD93D')
+        bars[best_idx].set_edgecolor('black')
+        bars[best_idx].set_linewidth(2)
 
-# Add a white circle in the middle to create a donut effect
-centre_circle = plt.Circle((0, 0), 0.70, fc='white')
-ax2.add_artist(centre_circle)
+        # Add value labels on bars
+        for i, (model, acc) in enumerate(zip(results_df["Model"], results_df["Accuracy"])):
+            ax1.text(i, acc + 1, f'{acc:.1f}%', ha='center', va='bottom', 
+                    fontsize=12, fontweight='bold', color='black')
+        
+        ax1.set_ylabel('Accuracy (%)', fontsize=12, fontweight='bold')
+        ax1.set_title(f'Model Performance - {phase}\n', fontsize=14, fontweight='bold')
+        ax1.set_ylim(0, min(100, max(results_df["Accuracy"]) + 15))
+        ax1.grid(axis='y', alpha=0.3)
+        ax1.tick_params(axis='x', rotation=15)
+        
+        # Donut Chart for performance distribution
+        wedges, texts, autotexts = ax2.pie(
+            results_df["Accuracy"], 
+            labels=results_df["Model"], 
+            autopct='%1.1f%%',
+            startangle=90,
+            colors=colors,
+            explode=[0.1 if i == best_idx else 0 for i in range(len(results_df))]
+        )
+        # Add white circle for donut
+        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+        ax2.add_artist(centre_circle)
 
-# Enhance text styling
-for autotext in autotexts:
-    autotext.set_color('green')
-    autotext.set_fontweight('bold')
-    autotext.set_fontsize(12)
-
-ax2.set_title('Performance Distribution (Donut Chart)\n', fontsize=14, fontweight='bold')
-
+        # Enhance text
+        for autotext in autotexts:
+            autotext.set_color('black')
+            autotext.set_fontweight('bold')
+            autotext.set_fontsize(11)
+        
+        ax2.set_title('Performance Distribution (Donut Chart)\n', fontsize=14, fontweight='bold')
+        
+        plt.tight_layout()
+        st.pyplot(fig)
         
         # Display metrics in a row
         st.write("### 🏆 Performance Metrics")
@@ -241,9 +231,11 @@ ax2.set_title('Performance Distribution (Donut Chart)\n', fontsize=14, fontweigh
         st.dataframe(results_display, use_container_width=True)
 
 else:
-    st.info("👈 Please upload a CSV file to get started!")
+    st.info("👆 Please upload a CSV file to get started!")
 
-# Add some styling
+# ============================
+# Styling
+# ============================
 st.markdown("""
 <style>
     .main-header {
