@@ -88,10 +88,12 @@ def evaluate_models(X_features, y):
 # ============================
 st.set_page_config(page_title="NLP Phase Analysis", layout="wide")
 
-st.title("📊 Phase-wise NLP Analysis with Model Comparison")
+st.title("Fake_news_detection_APP")
 
-# Sidebar for file upload
-with st.sidebar:
+# Split page into 2 columns → main (left) and sidebar (right)
+main_col, right_col = st.columns([3, 1])  # adjust ratio as needed
+
+with right_col:  # this replaces st.sidebar
     st.header("📁 Data Input")
     uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
     
@@ -155,7 +157,7 @@ if uploaded_file:
 
         # Display results without partitions
         st.write("---")
-        st.subheader("📊 Model Performance Overview")
+        st.subheader("Model Performance Overview")
         
         # Create a single unified visualization
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
@@ -163,12 +165,12 @@ if uploaded_file:
         # Enhanced Bar Chart
         colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4']
         bars = ax1.bar(results_df["Model"], results_df["Accuracy"], 
-                      color=colors, alpha=0.8, edgecolor='black', linewidth=1.2)
+                      color=colors, alpha=0.8, edgecolor='blue', linewidth=1.3)
         
         # Highlight the best model
         best_idx = results_df["Accuracy"].idxmax()
         bars[best_idx].set_color('#FFD93D')
-        bars[best_idx].set_edgecolor('red')
+        bars[best_idx].set_edgecolor('pink')
         bars[best_idx].set_linewidth(2)
         
         # Add value labels on bars
@@ -192,9 +194,9 @@ if uploaded_file:
         
         # Enhance pie chart text
         for autotext in autotexts:
-            autotext.set_color('white')
+            autotext.set_color('Green')
             autotext.set_fontweight('bold')
-            autotext.set_fontsize(10)
+            autotext.set_fontsize(12)
         
         ax2.set_title('Performance Distribution\n', fontsize=14, fontweight='bold')
         
