@@ -88,14 +88,14 @@ def evaluate_models(X_features, y):
 # ============================
 st.set_page_config(page_title="NLP Phase Analysis", layout="wide")
 
-st.title("📊 Fake News Detection - NLP Phase Analysis")
+st.title("📊 Fake News Detection")
 
 # File upload in the center (not sidebar)
-st.markdown("### 📁 Upload Your Dataset")
+st.markdown("### 📁 Upload Your Data")
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
 if uploaded_file:
-    st.success("File uploaded successfully!")
+    st.success("Awesome!!File uploaded successfully!")
     df = pd.read_csv(uploaded_file)
 
     st.markdown("### ⚙️ Configuration")
@@ -110,18 +110,18 @@ if uploaded_file:
         "Pragmatic"
     ])
 
-    run_analysis = st.button("🚀 Run Analysis", type="primary")
+    run_analysis = st.button("Click here for Analysis", type="primary")
 
 # Main content area
 if uploaded_file:
-    st.write("### 📋 Data Preview")
+    st.write("### 📋 Data Display")
     st.dataframe(df.head(), use_container_width=True)
     
     if run_analysis:
         st.write("---")
-        st.write(f"### 🔍 Analyzing: {phase}")
+        st.write(f"### 🔍 Investigation: {phase}")
         
-        with st.spinner("Processing data and training models..."):
+        with st.spinner("Wait a sec… the universe is rearranging itself for you."):
             X = df[text_col].astype(str)
             y = df[target_col]
 
@@ -154,7 +154,7 @@ if uploaded_file:
 
         # Display results
         st.write("---")
-        st.subheader("📊 Model Performance Overview")
+        st.subheader("📊 Brainpower Breakdown")
         
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
         
@@ -205,7 +205,7 @@ if uploaded_file:
         st.pyplot(fig)
         
         # Display metrics in a row
-        st.write("### 🏆 Performance Metrics")
+        st.write("### 🏆Operational Benchmarks")
         cols = st.columns(4)
         for idx, (model, accuracy) in enumerate(zip(results_df["Model"], results_df["Accuracy"])):
             with cols[idx]:
@@ -223,7 +223,7 @@ if uploaded_file:
                     )
         
         # Detailed results table
-        st.write("### 📋 Detailed Results")
+        st.write("### 📋 The Inside Scoop")
         results_display = results_df.copy()
         results_display["Accuracy"] = results_display["Accuracy"].apply(lambda x: f"{x:.1f}%")
         results_display["Rank"] = range(1, len(results_display) + 1)
@@ -231,7 +231,7 @@ if uploaded_file:
         st.dataframe(results_display, use_container_width=True)
 
 else:
-    st.info("👆 Please upload a CSV file to get started!")
+    st.info("👆 Bring your CSV, we’ll do the heavy lifting.")
 
 # ============================
 # Styling
