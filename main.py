@@ -88,10 +88,10 @@ def evaluate_models(X_features, y):
 # ============================
 st.set_page_config(page_title="NLP Phase Analysis", layout="wide")
 
-st.title("📊 Fake News Detection")
+st.title("📊 Rumor Buster")
 
 # File upload in the center (not sidebar)
-st.markdown("### 📁 Upload Your Data")
+st.markdown("### 📁 Data, Assemble!")
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
 if uploaded_file:
